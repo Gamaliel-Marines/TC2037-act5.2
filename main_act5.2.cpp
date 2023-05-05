@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const int NUMBERS = 5000; 
+const int NUMBERS = 10000; 
 const int THREADS = 8;
 
 
@@ -18,14 +18,12 @@ bool isPrime (int num){
     } 
     
     else {
-        bool result = true;
-        
         for (int i = 2; i <= sqrt(num); i++) {
             if (num % i == 0) {
-                result = false;
+                return false;
             }
         } 
-        return result;
+        return true;
     }
 }
 
@@ -39,12 +37,14 @@ double addPrime (int size) {
     } return acum;
 }
 
-
 typedef struct {
   int start, end;
   int *arr;
 } Block;
 
+pthread_mutex_t mutex_lock_sum;
+
+//función para sumar los números primos de forma paralela
 void* addPrimeParallel(void* param){
     double *acum = 0;
     Block* block = (Block*) param;
@@ -52,6 +52,7 @@ void* addPrimeParallel(void* param){
     acum = new double;
 
     for(int i = block->start; i < block->end; i++){
+
         if(isPrime(block->arr[i])){
             *acum = *acum + block->arr[i];
         }
@@ -69,7 +70,6 @@ int main (int argc, char* argv[]) {
     Block blocks[THREADS];
     pthread_t tids[THREADS];
 
-    start_timer();
 
 	a = new int[NUMBERS];
 
@@ -91,13 +91,14 @@ int main (int argc, char* argv[]) {
     }
 
 	cout << "Starting...\n";
-
-    
-    double r_sec = addPrime(NUMBERS);
-    double t_sec = stop_timer();
-
-    cout << "El resultado obtenido de forma secuencial es: " << setprecision(2) << r_sec << "\n";
-    cout << "Avg execution time:  " << setprecision(2) << (t_sec / 8) << "\n";
+    ms = 0;
+    for (int i = 0; i < N; i++) {
+        start_timer();
+        result = addPrime(NUMBERS);
+        ms += stop_timer();
+    }
+    cout << "El resultado obtenido de forma secuencial es: " << setprecision(2) << result << "\n";
+    cout << "Avg execution time:  " << setprecision(2) << (ms / N) << "\n";
 
 	ms = 0;
 
@@ -118,9 +119,8 @@ int main (int argc, char* argv[]) {
         ms += stop_timer();
     }
 
-
 	cout << "El resultado obtenido de forma paralela es: " << setprecision(2) << result << "\n";
-	cout << "Avg execution time:  " << setprecision(2) << (ms / 8) << "\n";
+	cout << "Avg execution time:  " << setprecision(2) << (ms / N) << "\n";
 
 	delete [] a;
     return 0;
