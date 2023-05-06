@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const int NUMBERS = 10000; 
+const int NUMBERS = 5000000; 
 const int THREADS = 8;
 
 
@@ -91,16 +91,17 @@ int main (int argc, char* argv[]) {
     }
 
 	cout << "Starting...\n";
-    ms = 0;
+    
+    double t_sec = 0;
     for (int i = 0; i < N; i++) {
         start_timer();
         result = addPrime(NUMBERS);
-        ms += stop_timer();
+        t_sec += stop_timer();
     }
     cout << "El resultado obtenido de forma secuencial es: " << setprecision(2) << result << "\n";
-    cout << "Avg execution time:  " << setprecision(2) << (ms / N) << "\n";
+    cout << "Tiempo de ejecucion de forma secuencial:  " << setprecision(2) << (t_sec / N) << "\n";
 
-	ms = 0;
+	double t_par = 0;
 
     for (int j = 0; j < N; j++) {
         start_timer();
@@ -116,11 +117,18 @@ int main (int argc, char* argv[]) {
             delete acum;
         }
 
-        ms += stop_timer();
+        t_par += stop_timer();
     }
 
 	cout << "El resultado obtenido de forma paralela es: " << setprecision(2) << result << "\n";
-	cout << "Avg execution time:  " << setprecision(2) << (ms / N) << "\n";
+	cout << "Tiempo de ejecucion de forma paralela:  " << setprecision(2) << (ms / N) << "\n";
+
+    if(t_par < t_sec){
+        cout << "La version paralela es mas rapida por: "<< t_sec - t_par<<"\n";
+    } else {
+        cout << "La version secuencial es mas rapidapor: "<<t_par - t_sec<<"\n";
+    }
+   
 
 	delete [] a;
     return 0;
