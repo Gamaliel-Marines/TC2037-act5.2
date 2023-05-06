@@ -93,8 +93,8 @@ int main (int argc, char* argv[]) {
         result = addPrime(NUMBERS);
         t_sec += stop_timer();
     }
-    cout << "El resultado obtenido de forma secuencial es: " << setprecision(2) << result << "\n";
-    cout << "Tiempo de ejecucion de forma secuencial:  " << setprecision(2) << (t_sec / N) << "\n";
+    cout << "El resultado obtenido de forma secuencial es: " << setprecision(7) << result << "\n";
+    cout << "Tiempo de ejecucion de forma secuencial:  " << setprecision(7) << (t_sec / N) << "\n";
 
 	double t_par = 0;
 
@@ -115,8 +115,8 @@ int main (int argc, char* argv[]) {
         t_par += stop_timer();
     }
 
-	cout << "El resultado obtenido de forma paralela es: " << setprecision(2) << result << "\n";
-	cout << "Tiempo de ejecucion de forma paralela:  " << setprecision(2) << (ms / N) << "\n";
+	cout << "El resultado obtenido de forma paralela es: " << setprecision(7) << result << "\n";
+	cout << "Tiempo de ejecucion de forma paralela:  " << setprecision(7) << (ms / N) << "\n";
 
     if(t_par < t_sec){
         cout << "La version paralela es mas rapida por: " << setprecision(7) << (t_sec - t_par)/N <<"\n";
