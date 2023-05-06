@@ -10,7 +10,6 @@ using namespace std;
 const int NUMBERS = 5000000; 
 const int THREADS = 8;
 
-
 //función para saber si un número es primo
 bool isPrime (int num){
     if (num < 2) {
@@ -42,8 +41,6 @@ typedef struct {
   int *arr;
 } Block;
 
-pthread_mutex_t mutex_lock_sum;
-
 //función para sumar los números primos de forma paralela
 void* addPrimeParallel(void* param){
     double *acum = 0;
@@ -57,9 +54,7 @@ void* addPrimeParallel(void* param){
             *acum = *acum + block->arr[i];
         }
     }
-
     return ((void**) acum);
-
 }
 
 
@@ -98,8 +93,8 @@ int main (int argc, char* argv[]) {
         result = addPrime(NUMBERS);
         t_sec += stop_timer();
     }
-    cout << "El resultado obtenido de forma secuencial es: " << setprecision(2) << result << "\n";
-    cout << "Tiempo de ejecucion de forma secuencial:  " << setprecision(2) << (t_sec / N) << "\n";
+    cout << "El resultado obtenido de forma secuencial es: " << setprecision(9) << result << "\n";
+    cout << "Tiempo de ejecucion de forma secuencial:  " << setprecision(9) << (t_sec / N) << "\n";
 
 	double t_par = 0;
 
@@ -120,8 +115,8 @@ int main (int argc, char* argv[]) {
         t_par += stop_timer();
     }
 
-	cout << "El resultado obtenido de forma paralela es: " << setprecision(2) << result << "\n";
-	cout << "Tiempo de ejecucion de forma paralela:  " << setprecision(2) << (ms / N) << "\n";
+	cout << "El resultado obtenido de forma paralela es: " << setprecision(9) << result << "\n";
+	cout << "Tiempo de ejecucion de forma paralela:  " << setprecision(9) << (ms / N) << "\n";
 
     if(t_par < t_sec){
         cout << "La version paralela es mas rapida por: "<< t_sec - t_par<<"\n";
