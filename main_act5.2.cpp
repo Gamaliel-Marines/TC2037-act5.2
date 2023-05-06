@@ -47,7 +47,7 @@ void* addPrimeParallel(void* param){
     Block* block = (Block*) param;
 
     acum = new double;
-
+    *acum = 0;
     for(int i = block->start; i < block->end; i++){
 
         if(isPrime(block->arr[i])){
@@ -72,8 +72,7 @@ int main (int argc, char* argv[]) {
         a[i] = i;
     }
 
-    block_size = NUMBERS / THREADS;
-    
+    block_size = NUMBERS / THREADS;    
     for (int i = 0; i < THREADS; i++) {
         blocks[i].arr = a;
         blocks[i].start = i * block_size;
@@ -88,13 +87,14 @@ int main (int argc, char* argv[]) {
 	cout << "Starting...\n";
     
     double t_sec = 0;
+
     for (int i = 0; i < N; i++) {
         start_timer();
         result = addPrime(NUMBERS);
         t_sec += stop_timer();
     }
-    cout << "El resultado obtenido de forma secuencial es: " << setprecision(9) << result << "\n";
-    cout << "Tiempo de ejecucion de forma secuencial:  " << setprecision(9) << (t_sec / N) << "\n";
+    cout << "El resultado obtenido de forma secuencial es: " << setprecision(2) << result << "\n";
+    cout << "Tiempo de ejecucion de forma secuencial:  " << setprecision(2) << (t_sec / N) << "\n";
 
 	double t_par = 0;
 
@@ -115,15 +115,14 @@ int main (int argc, char* argv[]) {
         t_par += stop_timer();
     }
 
-	cout << "El resultado obtenido de forma paralela es: " << setprecision(9) << result << "\n";
-	cout << "Tiempo de ejecucion de forma paralela:  " << setprecision(9) << (ms / N) << "\n";
+	cout << "El resultado obtenido de forma paralela es: " << setprecision(2) << result << "\n";
+	cout << "Tiempo de ejecucion de forma paralela:  " << setprecision(2) << (ms / N) << "\n";
 
     if(t_par < t_sec){
-        cout << "La version paralela es mas rapida por: "<< t_sec - t_par<<"\n";
+        cout << "La version paralela es mas rapida por: " << setprecision(7) << (t_sec - t_par)/N <<"\n";
     } else {
-        cout << "La version secuencial es mas rapidapor: "<<t_par - t_sec<<"\n";
+        cout << "La version secuencial es mas rapida por: " << setprecision(7) << (t_par - t_sec)/N <<"\n";
     }
-   
 
 	delete [] a;
     return 0;
