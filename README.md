@@ -2,7 +2,7 @@
 
 ## Equipo conformado por
 - Gamaliel Marines Olvera A01708746
-- RoRodrigo Terán Hernández A01704108
+- Rodrigo Terán Hernández A01704108
 
 <br>
 
